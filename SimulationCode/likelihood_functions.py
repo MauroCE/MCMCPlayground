@@ -7,7 +7,7 @@ def site_loglike(site, params, isss=5000, is_iter=1, pop="growing"):
     np.savetxt("paramfile", params, newline=' ', fmt="%.15f")
     target = pop + "/gtree_file" + str(site)
     command = ["./is_moments", target, str(is_iter), str(isss), "paramfile", "1"]
-    return np.log(np.float(check_output(command)))
+    return np.log(np.float(check_output(command, cwd="SimulationCode/")))
 
 
 def full_loglike(sites, params, isss=5000, is_iter=1, pop="growing"):
@@ -16,5 +16,5 @@ def full_loglike(sites, params, isss=5000, is_iter=1, pop="growing"):
     chunk_files = [pop + "/gtree_file" + str(site) for site in sites]
     ll = 0.0
     for target in chunk_files:
-        ll = ll + np.log(np.float(check_output(["./is_moments", target, str(is_iter), str(isss), "paramfile", "1"])))
+        ll = ll + np.log(np.float(check_output(["./is_moments", target, str(is_iter), str(isss), "paramfile", "1"], cwd="SimulationCode/")))
     return ll
